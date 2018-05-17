@@ -21,6 +21,7 @@ body_div = soup.find('div', id='bodyContent')
 nums = re.compile("[12][0-9]{3}")
 period = re.compile("\.")
 counter = 1
+input_var = ''
 
 def clean(string) :
     cleaned1 = re.sub(r'\W+', '', string)
@@ -34,7 +35,8 @@ def say(string) :
 		tts = gTTS(text=string, lang='en')
 		tts.save(str(counter) + ".mp3")
 		os.system("afplay -v 1 " + str(counter) + ".mp3")
-		variable = raw_input('Should have just played: ')
+		global input_var
+		input_var = raw_input('Enter to continue or q to quit: ')
 	except :
 		print("error")
 	return
@@ -42,11 +44,8 @@ def say(string) :
 for paragraph in body_div.find_all('p'):
 	candidates = paragraph.get_text().split(".")
 	for candidate in candidates:
-		print(clean(candidate))
-		#os.system('say --interactive=/green ' + clean(candidate))
-		if len(clean(candidate)) > 50 and len(clean(candidate)) < 100 :
+		
+		if len(clean(candidate)) > 50 and len(clean(candidate)) < 100 and input_var != 'q':
 			say(clean(candidate))
 		counter = counter + 1
     	
-        
-        counter = counter + 1
